@@ -1,0 +1,31 @@
+{
+  "key": "TEST-1",
+  "fields": {
+    "summary": "payment namespace 的 pod 一直重啟",
+    "description": "早上開始 checkout-api 一直掛，附截圖。",
+    "status": {"name": "Open"},
+    "issuetype": {"name": "Something Broken"},
+    "reporter": {"displayName": "Alice Chen"},
+    "created": "2026-07-14T09:12:00.000+0800",
+    "labels": [],
+    "comment": {
+      "total": 1,
+      "comments": [
+        {
+          "author": {"displayName": "Bob Wu"},
+          "created": "2026-07-14T09:30:00.000+0800",
+          "body": "我也遇到，錯誤是 CrashLoopBackOff"
+        }
+      ]
+    },
+    "attachment": [
+      {
+        "id": "10001",
+        "filename": "pods.png",
+        "mimeType": "image/png",
+        "size": 7,
+        "content": "http://127.0.0.1:18080/secure/attachment/10001/pods.png"
+      }
+    ]
+  }
+}
