@@ -10,7 +10,7 @@ LABEL="${2:-triaged}"
 
 existing="$(jira_curl -G "$JIRA_BASE_URL/rest/api/2/issue/$KEY" \
   --data-urlencode 'fields=labels' | jq -r '.fields.labels[]?')"
-if grep -qx -- "$LABEL" <<<"$existing"; then
+if grep -qxF -- "$LABEL" <<<"$existing"; then
   printf '%s 已有 label "%s"（可能已分診過），不重複加上\n' "$KEY" "$LABEL" >&2
   exit 2
 fi

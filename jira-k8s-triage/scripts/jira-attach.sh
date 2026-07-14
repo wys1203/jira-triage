@@ -10,7 +10,9 @@ OUT_DIR="${2:-$(mktemp -d)}"
 mkdir -p "$OUT_DIR"
 
 meta="$(jira_curl "$JIRA_BASE_URL/rest/api/2/attachment/$ATT_ID")"
-filename="$(jq -r '.filename' <<<"$meta")"
+filename="$(jq -r '.filename // empty' <<<"$meta")"
+[[ -n "$filename" ]] || die "附件 metadata 缺少 filename（附件 ID: $ATT_ID）"
+filename="$(basename "$filename")"
 content_url="$(jq -r '.content' <<<"$meta")"
 
 out_file="$OUT_DIR/$filename"
