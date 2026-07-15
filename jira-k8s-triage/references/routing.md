@@ -29,6 +29,22 @@
 | **S3** | P3 | P3 | P4 |
 | **S4** | P3 | P4 | P4 |
 
+## 特例分流規則
+
+> 優先於「K8s 領域分流表」比對；命中即直接分流給指定對象，不再走領域判定，
+> 報告理由引用規則編號。適用於非 PR 類 issue（Something Broken 與 Ask Platform）。
+> 持續補充：新規則直接 append，編號遞增（SR-002、SR-003…）。
+
+### SR-001: Edge firewall 開通申請
+
+**語意特徵**: 申請開通 edge 的 firewall——包含防火牆開通、firewall rule、
+開 port / whitelist 到 edge 環境等同義表述（依語意判斷，不只比對字面關鍵字）
+
+**分流對象**: <指定 engineer，請填實際人名>
+
+**附註**: 此類為申請單而非故障單，分級通常 S4/U3；報告的止血措施段改為
+「請附上來源/目的 IP、port、protocol 與申請事由，加速 engineer 處理」
+
 ## K8s 領域分流表
 
 | 領域 | 典型症狀/關鍵字 | 分流對象 |
@@ -44,6 +60,12 @@
 ## 止血措施庫
 
 Mitigate 步驟從對應領域挑選，只給「立即可執行、可逆」的動作，不給根治方案。
+
+給報案者的指引原則：
+- 調查步驟以 kube-dashboard 操作路徑為主（多數報案者沒有 kubectl 執行權限）；
+  下方的 kubectl 指令僅供有權限者作為替代
+- 可附上建議的 YAML 修正片段（tolerations、resources、affinity 等），
+  發布時用 {code} 區塊包覆，由報案者透過自己的部署管道套用
 
 ### Compute/Workload
 - rollback 到上一個可用版本：`kubectl rollout undo deployment/<name> -n <ns>`
