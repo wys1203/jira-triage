@@ -5,7 +5,7 @@
     "description": "早上開始 checkout-api 一直掛，附截圖。",
     "status": {"name": "Open"},
     "issuetype": {"name": "Something Broken"},
-    "reporter": {"displayName": "Alice Chen"},
+    "reporter": {"displayName": "Alice Chen", "name": "achen"},
     "created": "2026-07-14T09:12:00.000+0800",
     "labels": [],
     "comment": {

@@ -13,7 +13,7 @@ jira_curl -G "$JIRA_BASE_URL/rest/api/2/issue/$KEY" \
   "KEY: \(.key)",
   "Type: \(.fields.issuetype.name)",
   "Status: \(.fields.status.name)",
-  "Reporter: \(.fields.reporter.displayName // "unknown")",
+  "Reporter: \(.fields.reporter.displayName // "unknown") (\(.fields.reporter.name // "unknown"))",
   "Created: \(.fields.created)",
   "Labels: \(.fields.labels | join(", "))",
   "Summary: \(.fields.summary)",

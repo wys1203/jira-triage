@@ -106,7 +106,8 @@ h4. ⛔ Policy 違規通知
 ```
 
 規則：
-- 違規時不執行分流/轉診/priority/assignee，只發此 comment + 加 triaged label
+- 違規時不執行分流/轉診、不動 priority；發此 comment + 加 triaged label，
+  並把 assignee 改指回 Reporter（單退回報案者手上）
 - 「違規事項」必須引用具體證據（檔名、欄位、內容），不能只說「違規」
 - 報案者修正後回覆或重新提交，由複診（Follow-up）接手重新分診
 
