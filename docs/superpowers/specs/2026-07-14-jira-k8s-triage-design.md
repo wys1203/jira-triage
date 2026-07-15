@@ -435,6 +435,24 @@ PUT `/rest/api/2/issue/<KEY>/assignee` 的 `{"name": "<username>"}`
 
 **慣例**：與 comment/label/priority 同屬「核可發布」動作，受人工確認閘門保護。
 
+## 24. 提交政策（Submission Policies）
+
+第三類規則庫 `references/policies.md`，與先天條件（PC-xxx，平台規範、
+user 自行調整）、特例分流（SR-xxx，指定對象）並列。政策管的是
+**提交規範本身**：違規時不分流、不轉診、不動 priority/assignee，
+直接以「Policy 違規回覆範本」回覆 Reporter 違規原因（必須引用具體證據）
+與重新提交指引，加 triaged label；報案者修正後回覆由複診接手重新分診。
+
+每條政策四欄：適用範圍（哪條路徑、何時檢核）、檢核條件、違規原因、
+重新提交指引。編號 PL-001、PL-002… append 擴充。
+
+**檢核點**：路徑 3 在 Diff 證據閘門通過、判讀完成後檢核（優先於轉診判定）；
+路徑 1、2 併入先天條件檢查步驟（依各條適用範圍過濾）。
+
+**首條政策 PL-001**：PR 不得混合 resource quota 與其他變更——
+quota 變更須由專責 engineer 獨立審核，混單使審核責任無法切分；
+違規回覆請 Reporter 將 quota 變更與其他變更拆成獨立 PR 並分別開單。
+
 ## 變更紀錄
 
 | 日期 | 內容 |
@@ -448,3 +466,4 @@ PUT `/rest/api/2/issue/<KEY>/assignee` 的 `{"name": "<username>"}`
 | 2026-07-15 | 增補第 21 節 PR Review 轉診分流（quota 相關 → engineer A、其他 → engineer B） |
 | 2026-07-15 | 增補第 22 節自動更新 Jira Priority（P1→Highest、P2→High、P3→Low、P4→Lowest） |
 | 2026-07-15 | 增補第 23 節自動指派 Assignee（分流對象為 [~username] 時同步指派） |
+| 2026-07-15 | 增補第 24 節提交政策（PL-001 PR 不得混合 quota 與其他變更） |
