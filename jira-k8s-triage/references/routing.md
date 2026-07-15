@@ -29,6 +29,19 @@
 | **S3** | P3 | P3 | P4 |
 | **S4** | P3 | P4 | P4 |
 
+### Jira Priority 映射
+
+分診核可後同步更新 Jira Priority 欄位（`jira-priority.sh`）：
+
+| 分級 | Jira Priority |
+|------|---------------|
+| P1 | Highest |
+| P2 | High |
+| P3 | Low |
+| P4 | Lowest |
+
+（本 Jira 另有 Blocker、Minor 兩值，不由 skill 使用）
+
 ## 特例分流規則
 
 > 優先於「K8s 領域分流表」比對；命中即直接分流給指定對象，不再走領域判定，
