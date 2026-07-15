@@ -61,6 +61,17 @@
 **附註**: 此類為申請單而非故障單，分級通常 S4/U3；報告的止血措施段改為
 「請附上來源/目的 IP、port、protocol 與申請事由，加速 engineer 處理」
 
+### SR-002: Vault / Secret 元件問題
+
+**語意特徵**: 提及 Secret 長不出來、Secret 找不到、Vault 連不上、
+Vault 似乎不 work、ExternalSecret / SecretStore 同步失敗等 Vault 與
+Secret 注入相關症狀（依語意判斷，不只比對字面關鍵字）
+
+**分流對象**: <指定 engineer，請填實際人名，格式 [~username]>
+
+**附註**: 判定為疑似 Vault / Secret 元件（含 Secret 同步鏈路）問題，
+不走領域分流表；分級依實際影響評（生產環境 Secret 無法注入通常 S2 起跳）
+
 ## PR Review 分流
 
 > PR 判讀完成後（已通過 Diff 證據閘門）依 diff 內容判定轉診對象，二擇一：
