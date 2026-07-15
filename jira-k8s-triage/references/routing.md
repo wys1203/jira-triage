@@ -2,6 +2,9 @@
 
 > 這是你日後最常維護的檔案：團隊改組、調整 SLA、新增止血 runbook 都只改這一份。
 > 「分流對象」欄目前是 placeholder，請改成實際團隊/人名。
+> 指定個人時請用 `[~username]` 格式（Jira Server 帳號名）——comment 中會
+> 渲染成提及並通知對方，且核可發布後 assignee 會同步指派給該人；
+> 填團隊名稱則僅在報告中顯示，不動 assignee。
 
 ## Severity 分級
 

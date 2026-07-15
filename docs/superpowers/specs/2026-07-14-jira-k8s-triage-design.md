@@ -418,6 +418,23 @@ Blocker 與 Minor 不由 skill 使用。
 **實作備註**：jira-priority.sh 再次踩到 bash 3.2 的 `$VAR` 後接全形字元
 解析 bug（Task 1 已知問題），錯誤訊息以 printf 組字繞過。
 
+## 23. 自動指派 Assignee
+
+分流/轉診對象為具體個人時，核可發布後同步把單指派給該人。
+
+**新 script** `jira-assign.sh <ISSUE-KEY> <USERNAME>`：
+PUT `/rest/api/2/issue/<KEY>/assignee` 的 `{"name": "<username>"}`
+（Jira Server 格式，非 Cloud 的 accountId）。含離線測試（tests/test-assign.sh）。
+
+**觸發條件**：routing.md 的分流對象以 `[~username]` 格式填寫
+（特例分流 SR-xxx、PR Review 分流 A/B 皆適用）——`[~username]` 在 comment
+中渲染為提及並通知對方，assignee 取其中的 username 指派。
+
+**不指派的情況**：分流對象為團隊名稱（Jira 無法指派團隊）；
+先天條件命中（回報案者自行調整，單留在報案者手上）。
+
+**慣例**：與 comment/label/priority 同屬「核可發布」動作，受人工確認閘門保護。
+
 ## 變更紀錄
 
 | 日期 | 內容 |
@@ -430,3 +447,4 @@ Blocker 與 Minor 不由 skill 使用。
 | 2026-07-15 | 增補第 20 節報告範本調整（移除升級觸發條件、kube-dashboard 優先、YAML 建議、追問附原因） |
 | 2026-07-15 | 增補第 21 節 PR Review 轉診分流（quota 相關 → engineer A、其他 → engineer B） |
 | 2026-07-15 | 增補第 22 節自動更新 Jira Priority（P1→Highest、P2→High、P3→Low、P4→Lowest） |
+| 2026-07-15 | 增補第 23 節自動指派 Assignee（分流對象為 [~username] 時同步指派） |

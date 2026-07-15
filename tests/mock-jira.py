@@ -51,6 +51,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         (LOG / "last-put.json").write_bytes(self.rfile.read(length))
         if self.path == "/rest/api/2/issue/TEST-1":
             self._send(204)
+        elif self.path == "/rest/api/2/issue/TEST-1/assignee":
+            self._send(204)
         else:
             self._send(404, b"{}")
 
