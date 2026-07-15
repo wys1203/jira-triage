@@ -75,9 +75,13 @@ h4. 🔍 PR 判讀報告
 *Review 建議*: <傾向可 approve / 需要討論>
 理由: <一句話>
 
+*轉診*: → <engineer>（<resource quota 相關 / 一般 PR>）
+
 ----
 🤖 由 triage skill 產生，經工程師審核後發布；approve 由人工在 PR 平台執行
 ```
+
+規則：「轉診」依 routing.md 的「PR Review 分流」表二擇一，為必填欄位。
 
 規則：「Diff 證據」為必填欄位——具體檔名與 +/- 行數只有實際讀取 diff 頁面
 才能取得；缺失或填不出具體數字時草稿無效，不得進入收尾發布。

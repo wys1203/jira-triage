@@ -45,6 +45,15 @@
 **附註**: 此類為申請單而非故障單，分級通常 S4/U3；報告的止血措施段改為
 「請附上來源/目的 IP、port、protocol 與申請事由，加速 engineer 處理」
 
+## PR Review 分流
+
+> PR 判讀完成後（已通過 Diff 證據閘門）依 diff 內容判定轉診對象，二擇一：
+
+| 判定 | 依據 | 轉診對象 |
+|------|------|----------|
+| resource quota 相關 | diff 涉及 ResourceQuota / LimitRange 物件、resources.requests/limits 調整、namespace quota 申請或變更 | <engineer A，請填實際人名> |
+| 非 resource quota | 上述以外的所有 PR | <engineer B，請填實際人名> |
+
 ## K8s 領域分流表
 
 | 領域 | 典型症狀/關鍵字 | 分流對象 |
