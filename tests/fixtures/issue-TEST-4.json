@@ -1,0 +1,21 @@
+{
+  "key": "TEST-4",
+  "fields": {
+    "labels": ["triaged"],
+    "comment": {
+      "total": 2,
+      "comments": [
+        {
+          "author": {"displayName": "AI Bot"},
+          "created": "2026-07-15T11:00:00.000+0800",
+          "body": "h4. 👋 我們看過您回報的問題了\n...\n----\n🤖 由 AI triage 產生，經工程師審核後發布\nPC-002"
+        },
+        {
+          "author": {"displayName": "Alice Chen"},
+          "created": "2026-07-15T14:00:00.000+0800",
+          "body": "已照建議調整，但問題還在"
+        }
+      ]
+    }
+  }
+}
