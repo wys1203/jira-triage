@@ -9,7 +9,7 @@
 內容就是生產行為。若生產機直接 pull main，repo 每個 commit 都即時上線，
 無驗證、無回滾。
 
-- [ ] **B-13 版本釘選發版流程** —
+- [x] **B-13 版本釘選發版流程** —
   1. 開發一律在 main／feature branch，生產 clone **嚴禁直接 pull main**
   2. 發版：E2E 回歸（沿用 Task 11 三路徑測試單清單 + 複診一輪）→
      `git tag vX.Y` → push tag
@@ -28,25 +28,25 @@
 
 ### 第一批：防呆（必做，純 script 工程，TDD 可覆蓋）
 
-- [ ] **B-1 `jira-state.sh <KEY>`** — 把第 0 步的水位線三態判斷寫成 script，
+- [x] **B-1 `jira-state.sh <KEY>`** — 把第 0 步的水位線三態判斷寫成 script，
   deterministic 輸出 `UNTRIAGED` / `TRIAGED_NO_REPLY` / `FOLLOWUP_PENDING`。
   弱模型最容易錯的邏輯推理直接消滅。**投報率最高。**
-- [ ] **B-2 `jira-publish.sh <KEY> <草稿檔> [--priority X] [--assign Y]`** —
+- [x] **B-2 `jira-publish.sh <KEY> <草稿檔> [--priority X] [--assign Y]`** —
   把「comment → label → priority → assignee」四連發合併為一次原子呼叫，
   內建冪等檢查。四個決策點變一個。
-- [ ] **B-3 草稿 lint（併入 B-2）** — 發布前機械檢查：無殘留 `<填空位>`、
+- [x] **B-3 草稿 lint（併入 B-2）** — 發布前機械檢查：無殘留 `<填空位>`、
   footer 存在且逐字一致（水位線機制依賴；現行字串「🤖 由 AI triage 產生」）、
   必填欄位齊全（PR 的 Diff 證據/轉診）、priority 白名單、
   規則編號列格式（footer 下方可選行：要嘛不存在，要嘛完全符合
   `(PC|SR|PL)-\d{3}` 逗號串，且編號真實存在於 references/）。
   不過就拒發並列出原因。
-- [ ] **B-4 `jira-view.sh` 輸出上限** — comments 預設只出最後 N 則
+- [x] **B-4 `jira-view.sh` 輸出上限** — comments 預設只出最後 N 則
   （加 `--all` 開關）、超長描述截斷加標記，防 context 稀釋
   （弱模型 30-50k 後注意力衰減，lost in the middle）。
 
 ### 第二批：提質（視情況）
 
-- [ ] **B-5 SKILL.md 拆檔（progressive disclosure）** — 主檔只留設定區 +
+- [x] **B-5 SKILL.md 拆檔（progressive disclosure）** — 主檔只留設定區 +
   模式分派 + 鐵則（~30 行），四條路徑細節拆到 `references/flows/*.md`
   按需載入；處理 Something Broken 不載 PR 流程。
 - [ ] **B-6 `pr-diff.sh`（純 API 版 PR 判讀，2026-07-16 討論定案）**
@@ -69,12 +69,12 @@
     開發機磁碟有限，完整 clone 不可行；partial clone 仍有 tree 下載成本
   - 效益: 零磁碟、零視覺導航（弱模型死穴消除）、可 headless/cron、
     diff --stat 等級的精確證據天然滿足閘門
-- [ ] **B-7 分級範例庫（few-shot）** — 每個 severity 等級 3-5 個真實案例
+- [x] **B-7 分級範例庫（few-shot）** — 每個 severity 等級 3-5 個真實案例
   與判定理由，補弱模型的 K8s 領域直覺。與**討論模式**連動：
   每次 case review 結論沉澱成範例，範例庫隨討論成長。
-- [ ] **B-8 引用前逐字引述規則** — SKILL.md 要求引用 PC/SR/PL 前先逐字
+- [x] **B-8 引用前逐字引述規則** — SKILL.md 要求引用 PC/SR/PL 前先逐字
   引述該條內文，防幻覺編號（與 B-3 的編號驗證互補）。
-- [ ] **B-9 佇列模式逐單棄置細節** — 明確規定一張單處理完摘要一行後
+- [x] **B-9 佇列模式逐單棄置細節** — 明確規定一張單處理完摘要一行後
   拋棄細節再讀下一張，控制長佇列的 context 成長。
 
 ## 帳密安全強化（2026-07-16 規劃，目標環境 Ubuntu 24）
@@ -111,7 +111,7 @@ OS keyring（secret-tool）也擋不住 agent 跑同一條 lookup 指令。
 不全面、對 skill 理解不深，直接改規則庫會污染所有未來分診。
 B-1~B-9 全部針對「執行分診」端，本項覆蓋「維護規則庫」端。
 
-- [ ] **B-12 規則維護三層防護** —
+- [x] **B-12 規則維護三層防護** —
   1. **Authoring 指南** `references/authoring.md`：分類決策樹
      （PC/SR/PL/判讀準則/PR 分流怎麼選——弱模型最常放錯類）、
      每類固定欄位與編號規則、**跨檔影響表**（加某類規則要動哪幾個檔）、

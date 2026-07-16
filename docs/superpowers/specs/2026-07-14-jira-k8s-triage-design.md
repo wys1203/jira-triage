@@ -580,6 +580,50 @@ frontmatter 格式 opencode 相容，無需變更。
 **原則（今後撰寫約束）**：SKILL.md 與 references/ 不得引用特定 agent
 平台的工具名稱——描述「要做什麼」，工具由執行環境自行對應。
 
+## 31. 弱模型強化與維運防護批次（backlog B-1~B-5、B-7~B-9、B-12、B-13）
+
+一次實作的批次（排除使用者擱置的 B-6/B-10/B-11），核心原則：
+弱模型的每一步要嘛呼叫 script（deterministic）、要嘛照 checklist 填空
+（可驗證），不留自由發揮空間。
+
+**新 scripts**（均含離線測試，TDD）：
+
+- `jira-state.sh <KEY>`（B-1）：分診狀態三態判斷——UNTRIAGED /
+  TRIAGED_NO_REPLY / FOLLOWUP_PENDING，水位線邏輯從 prompt 層移入 script
+- `jira-publish.sh <KEY> <草稿檔> [--priority] [--assign] [--transition]`
+  （B-2/B-3）：原子化發布，內建草稿 lint（footer 逐字、殘留填空位、
+  規則編號列格式與真實性——編號必須存在於 references/，防幻覺引用）；
+  lint 不過拒發。label 已存在（複診）自動略過、transition 失敗警告續行
+- `rule-lint.sh`（B-12）：規則庫結構驗證——PC/SR/PL 編號連續不重複、
+  必要欄位齊全、SKILL.md 引用的節標題契約、flows 檔存在、
+  footer 字串一致性；掛入測試套件
+
+**script 增強**：`jira-view.sh` comments 預設最後 10 則（`--all` 全量）、
+描述超過 3000 字元截斷標注（B-4，防 lost-in-the-middle）
+
+**新 references**：
+
+- `authoring.md`（B-12）：規則庫維護指南——分類決策樹（PC/PL 以
+  結果性/程序性區分）、每類欄位表、跨檔影響表、規則變更提案格式、
+  worked example；SKILL.md 增設維護閘門（核可 + rule-lint 通過才 commit）
+- `examples.md`（B-7）：分級 few-shot 範例庫（各 severity 3 例 +
+  從嚴通則），含已沉澱的真實案例；與討論模式連動成長
+- `flows/`（B-5）：SKILL.md 拆檔——主檔精簡至 ~106 行（設定區、
+  scripts 表、啟動模式、第 0 步、鐵則），四條路徑 + 收尾 + 討論模式
+  移至 flows/{broken,ask,pr-review,followup,closing,discuss}.md，
+  進入該模式才讀取（progressive disclosure）
+
+**SKILL.md 行為新增**：引用 PC/SR/PL 前必逐字引述（B-8）；
+佇列模式逐單摘要後拋棄細節（B-9）
+
+**發版釘選（B-13）**：`RELEASE.md` 發版流程 + tag `v1.0`（以上線驗證過的
+commit 為基準）。生產 clone 停在 tag、嚴禁 pull main；本批次全部在
+v1.0 之後的 main 上，**未進入生產**，待 E2E 回歸後由使用者依 RELEASE.md
+發 v1.1。
+
+**附帶修復**：tests/helper.sh 的 stop_mock 在 MOCK_PID 未設時會
+`kill 0` 誤殺整個 process group，已修正。
+
 ## 變更紀錄
 
 | 日期 | 內容 |
@@ -603,3 +647,4 @@ frontmatter 格式 opencode 相容，無需變更。
 | 2026-07-16 | 增補第 28 節證據完整性強化（證據清點、連結閘門、analysis.md 抽檔、PC-002/PC-003）——首個生產案例回饋 |
 | 2026-07-16 | 增補第 29 節 comment 語氣改造（對內/對外分離、footer 改 AI triage、編號列於 footer 下方） |
 | 2026-07-16 | 增補第 30 節執行環境中立化（生產為 opencode，掃除 Claude 特化工具引用） |
+| 2026-07-16 | 增補第 31 節弱模型強化批次（state/publish/rule-lint scripts、authoring/examples/flows、v1.0 釘選）——B-6/B-10/B-11 依使用者決定擱置 |
