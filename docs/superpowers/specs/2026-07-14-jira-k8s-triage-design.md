@@ -531,6 +531,37 @@ PVC storageClassName immutable）。
    調高 quota；Bound PVC storageClassName 不可變 → 說明正確的
    資料遷移做法，不能直接改 yaml。
 
+## 29. Comment 語氣改造：對內/對外分離（取代第 11/16-18/24 節的部分表述）
+
+背景：實際審視 comment 內容後發現對 user 過於生硬——正文出現規則編號
+（PC-001）與內部術語（命中、暫定分級），且描述我們的驗證過程；
+對 user 是噪音甚至壓力源。
+
+**對內/對外分離原則**：
+
+- **對內（確認畫面）**：草稿上方附「內部判定摘要」——命中的規則編號、
+  S×U 推導與 Priority 映射、轉診依據；僅供工程師審核，不隨 comment 發布
+- **對外（發布的 comment）**：只含 user 可行動的資訊；正文禁止規則編號、
+  內部術語與驗證過程描述（寫入鐵則）
+
+**語氣準則**（report-template.md 新增「語氣與對外原則」節，約束所有範本）：
+平台團隊第一人稱親切開場；把報案者當聰明的初學者；請 user 操作時
+step-by-step 到「在哪個畫面點什麼」的顆粒度；涉及 K8s 概念附白話小知識；
+結尾留「直接回覆這則留言」的互動口（餵給複診機制）；分級反映在
+Priority 欄位、接手人反映在 assignee 與 [~提及]，正文不複述代號。
+
+**規則編號追溯（取代 label 方案）**：編號以一行列在 footer 下方
+（`PC-001,PC-002`），user 視為無害的 AI 代號；我們可用 JQL comment
+搜尋統計命中率。已討論並否決 label 方案（使用者決定）。
+
+**Footer 變更**：`🤖 由 triage skill 產生` → `🤖 由 AI triage 產生`
+（取代第 11/17 節的舊字串；footer 即複診水位線辨識標記，全處同步更新。
+變更時 skill 尚未上線發過 comment，無舊資料兼容問題）。
+
+**範本改寫**：五個範本全面改為親切語氣；「Policy 違規通知」更名為
+「請調整後重新提交」（h4. 🙏），不使用指責性字眼；Ask Platform 的
+「FAQ 建議」移入內部判定摘要。
+
 ## 變更紀錄
 
 | 日期 | 內容 |
@@ -552,3 +583,4 @@ PVC storageClassName immutable）。
 | 2026-07-16 | 修正 resource quota 定義：不含 workload 自身的 requests/limits（影響第 21 節 PR 分流與 PL-001） |
 | 2026-07-16 | 增補第 27 節分流後自動轉換 status 到 IMPLEMENT（新 script jira-transition.sh） |
 | 2026-07-16 | 增補第 28 節證據完整性強化（證據清點、連結閘門、analysis.md 抽檔、PC-002/PC-003）——首個生產案例回饋 |
+| 2026-07-16 | 增補第 29 節 comment 語氣改造（對內/對外分離、footer 改 AI triage、編號列於 footer 下方） |
