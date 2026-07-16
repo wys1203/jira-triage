@@ -90,7 +90,12 @@ check_heading "$REF/analysis.md" '## 圖片判讀準則'
 check_heading "$REF/analysis.md" '## ArgoCD 頁面判讀準則'
 check_heading "$REF/analysis.md" '## 外部連結判讀閘門'
 
-# 4) footer 水位線字串（範本與 jira-state.sh 必須一致）
+# 4) 流程檔存在（SKILL.md 分派依賴）
+for flow in broken ask pr-review followup closing discuss; do
+  [[ -f "$REF/flows/$flow.md" ]] || err "flows/$flow.md 不存在（SKILL.md 分派依賴）"
+done
+
+# 5) footer 水位線字串（範本與 jira-state.sh 必須一致）
 FOOTER_FULL='🤖 由 AI triage 產生，經工程師審核後發布'
 grep -qF "$FOOTER_FULL" "$REF/report-template.md" \
   || err "report-template.md: footer 字串被改動（水位線機制依賴逐字一致）"
