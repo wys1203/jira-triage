@@ -1,12 +1,16 @@
 # 發版與釘選流程
 
-生產環境 = 各 engineer 的 local clone + symlink 進 `~/.config/opencode/skills/`。
-**clone 當下 checkout 的內容就是生產行為**，因此：
+生產環境 = 各 engineer 下載 repo 的 **ZIP**（生產環境無法 clone GitHub），
+解壓後 symlink skill 資料夾進 `~/.config/opencode/skills/`。
 
 ## 鐵則
 
-- 生產機的 clone **嚴禁直接 `git pull`（跟 main）**——一律停在 release tag 上
-- main 是開發線，任何 commit 未經發版流程不得進入生產
+- **一律下載 release tag 的 ZIP，絕不下載 main 的 ZIP**——main 是未經
+  E2E 驗證的開發線，tag 才是驗證過的版本：
+  ```
+  https://github.com/wys1203/jira-triage/archive/refs/tags/vX.Y.zip
+  ```
+- main 上的任何 commit 未經發版流程不得進入生產
 
 ## 發版流程（維護者）
 
@@ -18,21 +22,26 @@
    git tag vX.Y
    git push origin vX.Y
    ```
+4. 通知團隊新版 ZIP 連結
 
-## 升級流程（每台生產機）
+## 安裝/升級流程（每台生產機，無 git 環境）
 
-```
-cd <clone 路徑>
-git fetch --tags
-git checkout vX.Y
-```
-
-symlink 不用動——換 checkout 即換版本。
+1. 下載 tag ZIP 並解壓成**版本化目錄**（不要覆蓋舊版）：
+   ```
+   ~/skill-releases/jira-triage-vX.Y/
+   ```
+2. 重指 symlink（`-n` 必要，否則會解參考舊 symlink）：
+   ```
+   ln -sfn ~/skill-releases/jira-triage-vX.Y/jira-k8s-triage \
+     ~/.config/opencode/skills/jira-k8s-triage
+   ```
+3. **保留上一版目錄**，這是回滾的依靠
 
 ## 回滾
 
 ```
-git checkout v<上一版>
+ln -sfn ~/skill-releases/jira-triage-v<上一版>/jira-k8s-triage \
+  ~/.config/opencode/skills/jira-k8s-triage
 ```
 
 一分鐘完成，無其他步驟。
