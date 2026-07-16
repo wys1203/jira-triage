@@ -30,7 +30,10 @@ make_env() {
 }
 
 stop_mock() {
-  kill "${MOCK_PID:-0}" 2>/dev/null || true
+  # MOCK_PID 未設時不可 kill（kill 0 會殺掉整個 process group）
+  if [[ -n "${MOCK_PID:-}" ]]; then
+    kill "$MOCK_PID" 2>/dev/null || true
+  fi
 }
 
 assert_contains() { # <實際輸出> <預期子字串> <測項名>

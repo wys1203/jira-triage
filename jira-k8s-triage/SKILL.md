@@ -218,6 +218,12 @@ Jira 上不留任何痕跡；只讀單與附件。
 5. **落地**：使用者核可後修改 references/ 對應檔案、spec 補記變更紀錄、
    commit 並 push——討論結論直接成為下次分診的行為
 
+## 規則庫維護（新增/修改 PC、SR、PL、判讀準則時）
+
+嚴格依 `references/authoring.md` 執行：分類決策樹 → 照表填欄位 →
+跨檔影響表 → 產出「規則變更提案」→ **使用者核可 + `scripts/rule-lint.sh`
+通過後才能 commit**。未經核可不改規則庫——與「未經核可不寫 Jira」同級鐵則。
+
 ## 鐵則
 
 - 未經使用者核可，絕不寫入 Jira（comment、label 都是）
