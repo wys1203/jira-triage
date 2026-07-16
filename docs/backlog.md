@@ -41,6 +41,31 @@
 - [ ] **B-9 佇列模式逐單棄置細節** — 明確規定一張單處理完摘要一行後
   拋棄細節再讀下一張，控制長佇列的 context 成長。
 
+## 帳密安全強化（2026-07-16 規劃，目標環境 Ubuntu 24）
+
+**威脅模型**：現行 `~/.jira-triage.env`（chmod 600 明文）與執行 skill 的
+LLM agent 同一個 uid，agent `cat` 即讀走；且 JIRA_PASS 很可能是 AD/LDAP
+帳密，洩漏影響遠大於 Jira 權限本身。同 uid 之內沒有秘密：
+OS keyring（secret-tool）也擋不住 agent 跑同一條 lookup 指令。
+
+- [ ] **B-10 使用者邊界隔離（主防線，Tier 3）** —
+  把「能力」給 LLM、把「秘密」留在另一個 uid：
+  1. 專用系統帳號 `jira-cred`（`useradd -r -s /usr/sbin/nologin`）
+  2. 帳密檔 `/etc/jira-triage/env`（owner jira-cred, mode 600）——
+     agent 的 uid 物理上讀不到
+  3. 受限 wrapper `/usr/local/lib/jira-triage/authcurl`（root 擁有）：
+     以 jira-cred 身分 source env、stdin 注入認證、執行 curl；
+     **必須強制 URL 前綴 = JIRA_BASE_URL**，否則淪為帶認證的萬用 curl，
+     可被誘導把 Authorization header 打到外部主機
+  4. sudoers 白名單：`agent-user ALL=(jira-cred) NOPASSWD: .../authcurl`
+  5. `lib.sh` 加 sudo 模式（env 檔模式保留給離線測試，測試不受影響）
+  6. 交付物：安裝腳本（建帳號/裝 wrapper/設 sudoers，需使用者 sudo 執行）
+  - 殘餘風險：agent 仍持有「操作 Jira」能力（skill 運作必要條件），
+    由人工確認閘門管控；密碼本體不再可能進入 context/history/ps/log
+- [ ] **B-11 Harness deny 規則（縱深，Tier 1）** — Claude Code settings
+  加 deny：`Read(~/.jira-triage.env)` 與相關 Bash pattern。
+  成本低但可繞（base64、python open），只當輔助不當主防線。
+
 ### 附註
 
 - 這些改動對 Claude 執行也全部有益（防呆閘門對強模型同樣是保險），
