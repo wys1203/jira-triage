@@ -32,7 +32,10 @@
 - [ ] **B-5 SKILL.md 拆檔（progressive disclosure）** — 主檔只留設定區 +
   模式分派 + 鐵則（~30 行），四條路徑細節拆到 `references/flows/*.md`
   按需載入；處理 Something Broken 不載 PR 流程。
-- [ ] **B-6 `pr-diff.sh`（純 API 版 PR 判讀，2026-07-16 討論定案）** —
+- [ ] **B-6 `pr-diff.sh`（純 API 版 PR 判讀，2026-07-16 討論定案）**
+  ⏸️ **擱置（2026-07-16 使用者決定）**：需要每位使用者配置
+  GITLAB_TOKEN/ADO_PAT，屬 breaking change——skill 已上線多人使用，
+  引入新 auth 要所有人配合設定，暫不執行。設計保留備用。 —
   取代瀏覽器成為主路徑，瀏覽器降為 fallback（無 token/API 失敗時），
   Diff 證據閘門兩路徑一體適用。
   - **GitLab**: `GET /api/v4/projects/{id}/merge_requests/{iid}/diffs`
@@ -58,6 +61,9 @@
   拋棄細節再讀下一張，控制長佇列的 context 成長。
 
 ## 帳密安全強化（2026-07-16 規劃，目標環境 Ubuntu 24）
+
+> ⏸️ **整段擱置（2026-07-16 使用者決定）**：暫不變更帳密保護方式。
+> B-10/B-11 設計保留，待使用者重啟。
 
 **威脅模型**：現行 `~/.jira-triage.env`（chmod 600 明文）與執行 skill 的
 LLM agent 同一個 uid，agent `cat` 即讀走；且 JIRA_PASS 很可能是 AD/LDAP
