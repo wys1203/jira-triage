@@ -30,9 +30,23 @@
 - [ ] **B-5 SKILL.md 拆檔（progressive disclosure）** — 主檔只留設定區 +
   模式分派 + 鐵則（~30 行），四條路徑細節拆到 `references/flows/*.md`
   按需載入；處理 Something Broken 不載 PR 流程。
-- [ ] **B-6 `pr-diff.sh`（API 版 PR 判讀）** — GitLab API / Azure DevOps API
-  直接拉 diff 純文字，瀏覽器降為 fallback。視覺導航是弱模型死穴。
-  ⚠️ 需要使用者決策：提供 GitLab / ADO 的 API token 與存放方式。
+- [ ] **B-6 `pr-diff.sh`（純 API 版 PR 判讀，2026-07-16 討論定案）** —
+  取代瀏覽器成為主路徑，瀏覽器降為 fallback（無 token/API 失敗時），
+  Diff 證據閘門兩路徑一體適用。
+  - **GitLab**: `GET /api/v4/projects/{id}/merge_requests/{iid}/diffs`
+    （分頁）直接取得各檔 diff 文字
+  - **Azure DevOps**: 無直接 diff API——`iterations/changes` 拿變更檔清單，
+    逐檔抓 base/target 兩版內容（items API）後本地 `diff -u`；
+    temp file 用完即刪；變更檔數設上限（如 50 檔，超過列檔名不展開）
+  - **認證**: 各 engineer 在自己的 `~/.jira-triage.env` 加
+    `GITLAB_TOKEN`（read_api）與 `ADO_PAT`（Code Read）——與現行
+    onboarding 同一步驟；token 一律唯讀 scope，API 物理上無法 approve
+    （鐵則從 prose 升級為能力邊界）；日後與 B-10 一起搬進 jira-cred 保護
+  - **已否決的替代案**: git clone/fetch 本地 diff——skill 供多位
+    support engineer 使用（SSH key 各自申請成本高），且部分 repo 超肥、
+    開發機磁碟有限，完整 clone 不可行；partial clone 仍有 tree 下載成本
+  - 效益: 零磁碟、零視覺導航（弱模型死穴消除）、可 headless/cron、
+    diff --stat 等級的精確證據天然滿足閘門
 - [ ] **B-7 分級範例庫（few-shot）** — 每個 severity 等級 3-5 個真實案例
   與判定理由，補弱模型的 K8s 領域直覺。與**討論模式**連動：
   每次 case review 結論沉澱成範例，範例庫隨討論成長。
