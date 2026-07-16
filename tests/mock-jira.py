@@ -33,6 +33,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(200, (FIX / "search.json").read_bytes())
         elif path == "/rest/api/2/attachment/10001":
             self._send(200, (FIX / "attachment-10001.json").read_bytes())
+        elif path == "/rest/api/2/issue/TEST-1/transitions":
+            self._send(200, (FIX / "transitions-TEST-1.json").read_bytes())
         elif path == "/secure/attachment/10001/pods.png":
             self._send(200, b"PNGDATA", "image/png")
         else:
@@ -43,6 +45,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         (LOG / "last-post.json").write_bytes(self.rfile.read(length))
         if self.path == "/rest/api/2/issue/TEST-1/comment":
             self._send(201, b'{"id": "20001"}')
+        elif self.path == "/rest/api/2/issue/TEST-1/transitions":
+            self._send(204)
         else:
             self._send(404, b"{}")
 
