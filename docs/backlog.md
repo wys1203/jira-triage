@@ -2,6 +2,23 @@
 
 > 尚未實作的改進項目。完成後移到 spec 增補節並在此劃掉。
 
+## 發版與釘選（2026-07-16 規劃，**最優先**）
+
+**背景**：生產＝各 engineer 的 local clone + symlink 進
+`~/.config/opencode/skills/`（opencode 環境）——clone 當下 checkout 的
+內容就是生產行為。若生產機直接 pull main，repo 每個 commit 都即時上線，
+無驗證、無回滾。
+
+- [ ] **B-13 版本釘選發版流程** —
+  1. 開發一律在 main／feature branch，生產 clone **嚴禁直接 pull main**
+  2. 發版：E2E 回歸（沿用 Task 11 三路徑測試單清單 + 複診一輪）→
+     `git tag vX.Y` → push tag
+  3. 各生產機升級：`git fetch --tags && git checkout vX.Y`
+     （symlink 不動，換 checkout 即換版本）
+  4. 回滾：checkout 上一個 tag，一分鐘完成
+  5. 交付物：`RELEASE.md` 發版說明 + 首個 tag `v1.0`（以當前已上線
+     且驗證過的 commit 為基準）
+
 ## 弱模型相容性強化（2026-07-16 規劃）
 
 **背景**：若執行分診的模型不是 Claude 而是較弱模型（如 Qwen3，context ~256k），

@@ -562,6 +562,24 @@ Priority 欄位、接手人反映在 assignee 與 [~提及]，正文不複述代
 「請調整後重新提交」（h4. 🙏），不使用指責性字眼；Ask Platform 的
 「FAQ 建議」移入內部判定摘要。
 
+## 30. 執行環境中立化（生產環境為 opencode）
+
+skill 上線後確認生產環境是 **opencode**（git clone 專案 + symlink skill
+資料夾進 `~/.config/opencode/skills/`），非 Claude Code。全面掃除
+Claude 特化的指令：
+
+- 「用 Read tool 視覺分析」→「以檔案讀取工具直接視覺判讀」
+- 「用 Claude in Chrome 開啟（ToolSearch 載入 tabs_context_mcp…）」→
+  「以執行環境提供的瀏覽器自動化工具開啟（工具名稱依 agent 環境而異）」
+- 「用 AskUserQuestion 問三選一」→「以三選一方式詢問（無選項式工具
+  就文字詢問）」
+
+scripts 均為可移植 bash（bash 3.2 相容碼可在 Ubuntu bash 5 執行），
+frontmatter 格式 opencode 相容，無需變更。
+
+**原則（今後撰寫約束）**：SKILL.md 與 references/ 不得引用特定 agent
+平台的工具名稱——描述「要做什麼」，工具由執行環境自行對應。
+
 ## 變更紀錄
 
 | 日期 | 內容 |
@@ -584,3 +602,4 @@ Priority 欄位、接手人反映在 assignee 與 [~提及]，正文不複述代
 | 2026-07-16 | 增補第 27 節分流後自動轉換 status 到 IMPLEMENT（新 script jira-transition.sh） |
 | 2026-07-16 | 增補第 28 節證據完整性強化（證據清點、連結閘門、analysis.md 抽檔、PC-002/PC-003）——首個生產案例回饋 |
 | 2026-07-16 | 增補第 29 節 comment 語氣改造（對內/對外分離、footer 改 AI triage、編號列於 footer 下方） |
+| 2026-07-16 | 增補第 30 節執行環境中立化（生產為 opencode，掃除 Claude 特化工具引用） |
