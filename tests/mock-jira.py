@@ -33,6 +33,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(200, (FIX / "issue-TEST-3.json").read_bytes())
         elif path == "/rest/api/2/issue/TEST-4":
             self._send(200, (FIX / "issue-TEST-4.json").read_bytes())
+        elif path == "/rest/api/2/issue/TEST-5":
+            self._send(200, (FIX / "issue-TEST-5.json").read_bytes())
         elif path == "/rest/api/2/search":
             self._send(200, (FIX / "search.json").read_bytes())
         elif path == "/rest/api/2/attachment/10001":
