@@ -11,8 +11,9 @@
 
 **適用範圍**: Pull Request Review（路徑 3，通過 Diff 證據閘門後檢核）
 
-**檢核條件**: diff 同時包含 resource quota 相關變更（ResourceQuota / LimitRange、
-resources.requests/limits 調整、namespace quota）**與**任何其他性質的變更
+**檢核條件**: diff 同時包含 resource quota 相關變更（ResourceQuota /
+LimitRange 物件、namespace quota 申請或變更；**不含** workload 自身的
+resources.requests/limits——那是一般工作負載調整）**與**任何其他性質的變更
 
 **違規原因**: resource quota 變更須由專責 engineer 獨立審核，
 與其他變更混在同一 PR 會使審核責任無法切分，不符合 policy

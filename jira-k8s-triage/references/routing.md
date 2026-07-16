@@ -78,7 +78,7 @@ Secret 注入相關症狀（依語意判斷，不只比對字面關鍵字）
 
 | 判定 | 依據 | 轉診對象 |
 |------|------|----------|
-| resource quota 相關 | diff 涉及 ResourceQuota / LimitRange 物件、resources.requests/limits 調整、namespace quota 申請或變更 | <engineer A，請填實際人名> |
+| resource quota 相關 | diff 涉及 ResourceQuota / LimitRange 物件、namespace quota 申請或變更（**不含** workload 自身的 resources.requests/limits——那是一般工作負載調整） | <engineer A，請填實際人名> |
 | 非 resource quota | 上述以外的所有 PR | <engineer B，請填實際人名> |
 
 ## K8s 領域分流表
