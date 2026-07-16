@@ -18,8 +18,10 @@
   把「comment → label → priority → assignee」四連發合併為一次原子呼叫，
   內建冪等檢查。四個決策點變一個。
 - [ ] **B-3 草稿 lint（併入 B-2）** — 發布前機械檢查：無殘留 `<填空位>`、
-  footer 存在（水位線機制依賴）、必填欄位齊全（PR 的 Diff 證據/轉診）、
-  priority 白名單、草稿中引用的 PC/SR/PL 編號真實存在於 references/。
+  footer 存在且逐字一致（水位線機制依賴；現行字串「🤖 由 AI triage 產生」）、
+  必填欄位齊全（PR 的 Diff 證據/轉診）、priority 白名單、
+  規則編號列格式（footer 下方可選行：要嘛不存在，要嘛完全符合
+  `(PC|SR|PL)-\d{3}` 逗號串，且編號真實存在於 references/）。
   不過就拒發並列出原因。
 - [ ] **B-4 `jira-view.sh` 輸出上限** — comments 預設只出最後 N 則
   （加 `--all` 開關）、超長描述截斷加標記，防 context 稀釋
