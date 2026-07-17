@@ -14,7 +14,7 @@ description: Use when triaging K8s platform Jira issues (Jira Server 7.10) - sin
 
 - PROJECT_KEY: `CHANGEME`
 - 待分診狀態: `Open, "To Do"`
-- 分流後狀態: `IMPLEMENT`（分流/轉診成立時自動轉換到此狀態）
+- 分流後狀態: `Implement`（分流/轉診成立時自動轉換到此狀態；名稱須與 Jira workflow 逐字一致，含大小寫）
 - 佇列 JQL（labels IS EMPTY 不可省略，否則會漏掉沒有任何 label 的新單）:
   `project = <PROJECT_KEY> AND (labels IS EMPTY OR labels != triaged) AND status in (<待分診狀態>) ORDER BY created ASC`
 - Follow-up JQL（複診掃描；`updated` 會被任何欄位異動觸發，命中後仍須用 jira-state.sh 二次確認）:

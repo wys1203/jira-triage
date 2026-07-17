@@ -19,12 +19,12 @@ EOF
 
 # 1) 合法草稿 → 完整發布（comment + label + priority + assign + transition）
 out="$(bash "$SCRIPTS_DIR/jira-publish.sh" TEST-1 "$good_draft" \
-  --priority Highest --assign sshong --transition IMPLEMENT 2>&1)"
+  --priority Highest --assign sshong --transition Implement 2>&1)"
 assert_contains "$out" "comment 已發布" "發布 comment"
 assert_contains "$out" 'TEST-1 已加上 label "triaged"' "加 label"
 assert_contains "$out" 'priority 已更新為 "Highest"' "更新 priority"
 assert_contains "$out" "assignee 已指派給 sshong" "指派 assignee"
-assert_contains "$out" "status 已轉換為 IMPLEMENT" "轉換 status"
+assert_contains "$out" "status 已轉換為 Implement" "轉換 status"
 assert_contains "$out" "發布完成: TEST-1" "回報發布完成"
 
 # 2) 缺 footer → 拒發且不打任何 API

@@ -648,3 +648,4 @@ v1.0 之後的 main 上，**未進入生產**，待 E2E 回歸後由使用者依
 | 2026-07-16 | 增補第 29 節 comment 語氣改造（對內/對外分離、footer 改 AI triage、編號列於 footer 下方） |
 | 2026-07-16 | 增補第 30 節執行環境中立化（生產為 opencode，掃除 Claude 特化工具引用） |
 | 2026-07-16 | 增補第 31 節弱模型強化批次（state/publish/rule-lint scripts、authoring/examples/flows、v1.0 釘選）——B-6/B-10/B-11 依使用者決定擱置 |
+| 2026-07-17 | E2E 發現：分流後狀態實際名稱為 `Implement`（首字大寫）非 `IMPLEMENT`——修正設定區並註明須與 workflow 逐字一致（取代第 27/31 節的預設值表述） |

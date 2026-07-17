@@ -1,6 +1,6 @@
 {
   "transitions": [
-    {"id": "21", "name": "Start Implement", "to": {"name": "IMPLEMENT"}},
+    {"id": "21", "name": "Start Implement", "to": {"name": "Implement"}},
     {"id": "31", "name": "Close", "to": {"name": "Closed"}}
   ]
 }
