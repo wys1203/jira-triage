@@ -1,0 +1,10 @@
+[
+  {
+    "old_path": "docs/README.md",
+    "new_path": "docs/README.md",
+    "new_file": true,
+    "deleted_file": false,
+    "renamed_file": false,
+    "diff": "@@ -0,0 +1,2 @@\n+# App\n+說明文件\n"
+  }
+]

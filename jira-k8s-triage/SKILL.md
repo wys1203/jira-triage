@@ -1,6 +1,6 @@
 ---
 name: jira-k8s-triage
-description: Use when triaging K8s platform Jira issues (Jira Server 7.10) - single issue or queue mode, runs Triage Loop (classify severity, route to team, mitigation advice), analyzes screenshot attachments, reviews GitLab/Azure DevOps PRs via browser, follows up on user replies to triage comments, posts comment after human approval; also discuss mode (read-only case review to improve the rule library)
+description: Use when triaging K8s platform Jira issues (Jira Server 7.10) - single issue or queue mode, runs Triage Loop (classify severity, route to team, mitigation advice), analyzes screenshot attachments, reviews GitLab/Azure DevOps PRs via read-only API (browser fallback), follows up on user replies to triage comments, posts comment after human approval; also discuss mode (read-only case review to improve the rule library)
 ---
 
 # Jira K8s Issues Triage
@@ -31,6 +31,7 @@ description: Use when triaging K8s platform Jira issues (Jira Server 7.10) - sin
 | `$SCRIPTS/jira-search.sh '<JQL>'` | 查詢，輸出精簡列表 |
 | `$SCRIPTS/jira-attach.sh <附件ID> [目錄]` | 下載附件，印出存檔路徑 |
 | `$SCRIPTS/jira-publish.sh <KEY> <草稿檔> [選項]` | **發布首選**：lint + comment + label + priority + assign + transition 一次完成 |
+| `$SCRIPTS/pr-diff.sh '<PR連結>'` | PR 判讀主路徑：純 API 取得 MR/PR 的檔案清單與 diff（需認證檔加 GITLAB_TOKEN / ADO_PAT，唯讀 scope；未設 token 時報錯並提示瀏覽器 fallback） |
 | `$SCRIPTS/rule-lint.sh` | 規則庫結構驗證（維護規則時必跑） |
 
 （單步 script：jira-comment / jira-label / jira-priority / jira-assign /

@@ -49,10 +49,10 @@
 - [x] **B-5 SKILL.md 拆檔（progressive disclosure）** — 主檔只留設定區 +
   模式分派 + 鐵則（~30 行），四條路徑細節拆到 `references/flows/*.md`
   按需載入；處理 Something Broken 不載 PR 流程。
-- [ ] **B-6 `pr-diff.sh`（純 API 版 PR 判讀，2026-07-16 討論定案）**
-  ⏸️ **擱置（2026-07-16 使用者決定）**：需要每位使用者配置
-  GITLAB_TOKEN/ADO_PAT，屬 breaking change——skill 已上線多人使用，
-  引入新 auth 要所有人配合設定，暫不執行。設計保留備用。 —
+- [x] **B-6 `pr-diff.sh`（純 API 版 PR 判讀，2026-07-16 討論定案）**
+  ✅ **已實作（2026-07-18 使用者解凍）**：token 設為**可選**——未設定時
+  script 明確報錯並提示瀏覽器 fallback，既有使用者行為不變，
+  breaking change 顧慮以漸進 opt-in 化解。詳見 spec 第 32 節。 —
   取代瀏覽器成為主路徑，瀏覽器降為 fallback（無 token/API 失敗時），
   Diff 證據閘門兩路徑一體適用。
   - **GitLab**: `GET /api/v4/projects/{id}/merge_requests/{iid}/diffs`

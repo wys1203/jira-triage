@@ -624,6 +624,38 @@ v1.0 之後的 main 上，**未進入生產**，待 E2E 回歸後由使用者依
 **附帶修復**：tests/helper.sh 的 stop_mock 在 MOCK_PID 未設時會
 `kill 0` 誤殺整個 process group，已修正。
 
+## 32. PR 判讀 API 化（B-6 解凍實作，取代第 18 節的瀏覽器主路徑）
+
+2026-07-18 使用者決定解凍 B-6（曾因「新 auth = breaking change」擱置）。
+討論後確認 GitLab MCP 方案不適合（同樣需要 per-user token、增加每台機器
+的 MCP 安裝與設定、寬工具面對弱模型不利、且無法覆蓋 ADO），採自建 script。
+
+**`scripts/pr-diff.sh '<PR連結>'`**——PR 判讀主路徑，瀏覽器降為 fallback：
+
+- 平台由 URL 判別：`.../merge_requests/<iid>`（含新舊兩種 GitLab 路徑格式）
+  → GitLab；`.../_git/<repo>/pullrequest/<id>`（dev.azure.com 與
+  visualstudio.com 皆可）→ Azure DevOps
+- **GitLab**：`GET /api/v4/projects/{id}/merge_requests/{iid}/diffs`
+  逐頁抓取（per_page=100，安全上限 20 頁）合併；輸出檔案清單
+  （每檔 +/- 行數由 diff 文字計得）與逐檔 diff
+- **Azure DevOps**：PR 詳情取 lastMergeSource/TargetCommit → 最新
+  iteration 的 changes 取變更清單 → 逐檔以 items API 抓 target/PR 兩版
+  內容（`$format=text`）→ 本地 `diff -u`；temp 檔集中於 mktemp 目錄，
+  trap EXIT 清除；單檔內容抓取失敗（二進位/權限）標注後跳過不中斷
+- **輸出上限**（弱模型 context 保護）：檔案數 > 50 僅前 50 檔展開 diff
+  （其餘只列清單並明示總數/上限）；單檔 diff > 300 行截斷加標記
+- **認證**：與 Jira 帳密同一認證檔，新增可選變數 `GITLAB_TOKEN`
+  （read_api 唯讀）與 `ADO_PAT`（Code Read 唯讀）；一律經 stdin
+  curl-config 傳入（GitLab 為 header、ADO 為 basic auth），不進 argv/ps。
+  唯讀 scope 使 approve 在 API 層物理上不可能——鐵則從 prose 升級為能力邊界
+- **非 breaking**：token 為可選——未設定時 script 以明確訊息報錯
+  （點名該加哪個變數）並提示改走瀏覽器 fallback，既有使用者不設 token
+  行為等同升級前；擱置 B-6 的顧慮以「漸進 opt-in」化解
+- **Diff 證據閘門**不變，兩路徑一體適用（flows/pr-review.md 改寫）
+- 測試：新增 `tests/mock-git.py`（GitLab/ADO 雙路由、驗 token/basic auth）
+  與 `tests/test-pr-diff.sh`（21 測項：用法/URL 判別/缺 token 提示/
+  401/分頁合併/檔數上限/ADO 本地 diff），helper.sh 加 git mock 起停
+
 ## 變更紀錄
 
 | 日期 | 內容 |
@@ -649,3 +681,4 @@ v1.0 之後的 main 上，**未進入生產**，待 E2E 回歸後由使用者依
 | 2026-07-16 | 增補第 30 節執行環境中立化（生產為 opencode，掃除 Claude 特化工具引用） |
 | 2026-07-16 | 增補第 31 節弱模型強化批次（state/publish/rule-lint scripts、authoring/examples/flows、v1.0 釘選）——B-6/B-10/B-11 依使用者決定擱置 |
 | 2026-07-17 | E2E 發現：分流後狀態實際名稱為 `Implement`（首字大寫）非 `IMPLEMENT`——修正設定區並註明須與 workflow 逐字一致（取代第 27/31 節的預設值表述） |
+| 2026-07-18 | 增補第 32 節 PR 判讀 API 化（B-6 解凍：pr-diff.sh 純 API 主路徑、瀏覽器降 fallback、token 可選漸進 opt-in 化解 breaking change 顧慮） |

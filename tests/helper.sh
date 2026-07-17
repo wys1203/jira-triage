@@ -29,10 +29,30 @@ make_env() {
   export JIRA_TRIAGE_ENV="$TEST_ENV"
 }
 
+GIT_MOCK_PORT="${GIT_MOCK_PORT:-18081}"
+GIT_MOCK_URL="http://127.0.0.1:$GIT_MOCK_PORT"
+
+start_git_mock() {
+  python3 "$TESTS_DIR/mock-git.py" "$GIT_MOCK_PORT" "$TESTS_DIR/fixtures" &
+  GIT_MOCK_PID=$!
+  local i
+  for i in $(seq 1 30); do
+    if curl -s -o /dev/null "$GIT_MOCK_URL/ping"; then
+      return 0
+    fi
+    sleep 0.1
+  done
+  echo "ERROR: mock git server 啟動失敗（port $GIT_MOCK_PORT 可能被占用）" >&2
+  exit 1
+}
+
 stop_mock() {
-  # MOCK_PID 未設時不可 kill（kill 0 會殺掉整個 process group）
+  # PID 未設時不可 kill（kill 0 會殺掉整個 process group）
   if [[ -n "${MOCK_PID:-}" ]]; then
     kill "$MOCK_PID" 2>/dev/null || true
+  fi
+  if [[ -n "${GIT_MOCK_PID:-}" ]]; then
+    kill "$GIT_MOCK_PID" 2>/dev/null || true
   fi
 }
 
